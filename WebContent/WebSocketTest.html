@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<!-- <link href="css/liyan998.css" rel="stylesheet" type="text/css" /> -->
+
+<!-- <script src="js/sprinf.js"></script> -->
+<script src="js/message.js"></script>
+
+<script>
+			function getConnectStr(arr) {
+				var temp = "Connect:%0%<br>试用:%1%<br>激活:%2%<br>";
+				for (var i = 0;i&ltarr.length;i++) {
+					temp = temp.replace("%" + i + "%", arr[i]);
+				}
+				return temp;
+			}
+			
+			function removeClient()
+			{
+				var obj = document.getElementById("timeselect");
+				server.writeData(MSG_MON_DELETECLIENT+'#{"hour":'+obj.options[obj.selectedIndex].value+'}');	
+			}
+			
+			function init()
+			{
+				var obj = document.getElementById("timeselect");
+				for(var i = 1;i < 6;i++)
+				{
+					
+					obj.options.add(new Option((i*5)+"小时",i*5)) ; 
+					
+				}
+			
+				//console.log(obj.options.length);
+			}
+
+</script>
+
+</head>
+<body onload="init()">
+
+	<div>
+		服务器状态: <span id="serverstate">未连接</span>
+	</div>
+	<div id='online'>
+		<h1 id="connNum"></h1>
+		<div>
+			停止试用用户 <label>剩余</label> <select id="timeselect">
+			</select> <input type="button" value="确定" onclick="removeClient()" />
+		</div>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<!-- Reset Stylesheet -->
+<!-- <link rel="stylesheet" href="css/reset.css" type="text/css"
+	media="screen" />  -->
+<!-- Main Stylesheet -->
+<!-- <link rel="stylesheet" href="css/style.css" type="text/css"
+	media="screen" /> -->
+<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+<!-- <link rel="stylesheet" href="css/invalid.css" type="text/css"
+	media="screen" /> -->
+
+<style type="text/css">
+/* *{
+padding: 0px;
+margin: 0px;
+} */
+.turnonoff {
+	float: right;
+	width: 112px;
+	height: 30px;
+}
+
+.bar {
+	width: 50%;
+}
+
+.chananlimg {
+	width: 50px;
+	border: solid;
+}
+
+#openshop {
+	/*display: none;*/
+	
+}
+
+.queList {
+	padding: 20px 0px;
+	float: left;
+	width: 100%;
+}
+
+.queElement1,.queElement2 {
+	width: 50px;
+	height: 50px;
+	border: 1px;
+	float: left;
+	border-style: solid;
+	border-color: blue rgb(25%, 35%, 45%) #909090 red;
+}
+
+.queElement1 {
+	background-color: #88ffff;
+}
+
+.queElement2 {
+	background-color: #ccff00;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script src="js/ajax.js"></script>
+<script src="js/jsscript.js"></script>
+
+
+<script>
+$(function(){	
+	function confim()
+	{
+		dialog.dialog( "close" );;
+	}	
+	var dialog = $( "#dialog-message" ).dialog({
+      modal: true,
+      autoOpen: false,
+      buttons: {
+        Ok: function() {        
+        	//提交派发任务
+        	
+          	$( this ).dialog( "close" );
+        },
+		"取消":confim
+      }
+    });
+
+	$( "#dialogconfirm" ).button().on( "click", function() {
+	      dialog.dialog( "open" );
+	});	
+});
+
+function init() {
+	shopStat.state = 1;
+	shopStat.online = shopStat.state == 0 ? false : true;
+	//
+	flushShopState(shopStat);
+	//
+	ajaxUrl('http://localhost:8084/Test/TestServlet' , testajax);
+}
+
+function chanageShopState() {
+	if (shopStat.state == 0) {
+		shopStat.state = 1;
+
+	} else {
+		shopStat.state = 0;
+		shopStat.online = false;
+	}
+	flushShopState(shopStat);
+}
+
+function chanageOnlineState() {
+	if (shopStat.online) {
+		shopStat.online = false;
+	} else {
+		shopStat.online = true;
+	}
+
+	flushShopState(shopStat);
+}
+</script>
+
+
+
+<title>系统设置</title>
+</head>
+<body onload="init()">
+	<!--dialog -->
+	<div id="dialog-message" title="分发任务确认">
+		<p>
+			<span class="ui-icon ui-icon-circle-check"
+				style="float: left; margin: 0 7px 50px 0;"></span>用户XXX
+		</p>
+		<p>
+			指定给 <b>某业务</b>.
+		</p>
+	</div>
+	<!--  -->
+	<div>
+		<h3>欢迎</h3>
+		<div class="bar">
+			<span>Shop State:</span> <span id="shoplab"></span><input
+				id="shoponOffbutten" onclick="chanageShopState()" class="turnonoff"
+				type="button" />
+		</div>
+
+
+		<div id="openshop">
+			<div>
+				<h1 id="openingTime">00：00：00</h1>
+			</div>
+
+			<div class="bar">
+				<span>Online Order:</span> <span id="onlinelab"></span><input
+					id="shoponlinebutton" onClick="chanageOnlineState()"
+					class="turnonoff" type="button" />
+			</div>
+			<div>
+				<h1 id="onlineTime">00：00：00</h1>
+			</div>
+			<!--line -->
+			<div
+				style="width: 100%; height: 1px; background-color: #000000; margin: 30px 0px;"></div>
+
+			<!-- 分配模型 -->
+			<div style="width: 100%;">
+
+				<div style="width: 100%; float: left; background-color: #cccccc;">
+
+					<div style="padding: 0 67px;">
+						<select>
+							<option>业务实体1</option>
+							<option>业务实体2</option>
+							<option>业务类型1</option>
+							<option>业务类型1</option>
+						</select> <input type="button" value="分配" id="dialogconfirm"
+							style="margin: 40px; height: 37px; width: 110px;" />
+					</div>
+
+				</div>
+
+
+			</div>
+			<!-- 分配模型 -->
+			<div
+				style="width: 100%; height: 200px; clear: left; padding: 40px 0px;">
+				<ol id='busniesslist'>
+					<li class="queList">
+
+						<div style="float: left;">
+							<img src="yingwenmoban/resources/images/icons/pencil.png"
+								class="chananlimg" />
+						</div>
+
+						<div style="float: left; padding: 3px 0px;">
+							正在等待：23<input style="float: left; width: 98px; height: 31px;"
+								type="button" value="下一位" />
+						</div>
+
+
+						<div style="width: 100%; height: 50px; float: left;">
+							<div class="queElement1"></div>
+							<div class="queElement2"></div>
+							<div class="queElement1"></div>
+						</div>
+
+					</li>
+
+				</ol>
+			</div>
+
+		</div>
+	</div>
+
+
+
+</body>
+</html>
