@@ -17,7 +17,19 @@ function ajaxUrl(urlstr, handler) {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			handler(xmlhttp.responseText);
 		}
-	}
+		var statusCode = (xmlhttp.status / 100);
+		
+		console.log("Code:"+statusCode);
+		switch(statusCode)
+		{
+		case 5:
+			console.log("Server Error!");
+			break;
+		}
+	};
+	
 	xmlhttp.open("GET", urlstr, true);
+	
 	xmlhttp.send();
+	
 }

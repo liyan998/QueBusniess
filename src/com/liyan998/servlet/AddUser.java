@@ -1,8 +1,7 @@
-package com.liyan998;
+package com.liyan998.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,23 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import util.StringUtil;
 
-import com.liyan998.logic.IBusniess;
 import com.liyan998.logic.QueService;
+import com.liyan998.logic.User;
 
 /**
- * Servlet implementation class TestServlet
+ * Servlet implementation class AddUser
  */
-@WebServlet("/TestServlet")
-public class TestServlet extends HttpServlet
+@WebServlet("/AddUser")
+public class AddUser extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public TestServlet()
+	public AddUser()
 	{
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -48,33 +48,44 @@ public class TestServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
 	{
+		response.setCharacterEncoding("utf-8");
 		proessRequest(request, response);
 	}
 
 	private void proessRequest(HttpServletRequest request,
 			HttpServletResponse response)
 	{
+		String indexstr 	= request.getParameter("busIndex");
+		String channelstr 	= request.getParameter("channel");
 
-		response.setCharacterEncoding("utf-8");
+		if (indexstr == null || indexstr.equals(""))
+		{
+			return;
+		}
+		if (channelstr == null || channelstr.equals(""))
+		{
+			return;
+		}
 
+		// -----------------------------------------------------------
 		PrintWriter pw = null;
 		try
 		{
 			pw = response.getWriter();
 
-			List<IBusniess> allBus = QueService.getInstrance()
-					.getAllBusniesses();
+			QueService qs = QueService.getInstrance();
 
-//			for (IBusniess bus : allBus)
-//			{
-//				pw.append("<h1>" + bus.getJData() + "</h1>");
-//			}
-			pw.append(StringUtil.gson.toJson(allBus));
+			int index 	= Integer.parseInt(indexstr);
+			int channel = Integer.parseInt(channelstr);
+
+			User user = qs.addToBusneiss(index, channel );
+			
+			pw.append(StringUtil.gson.toJson(user));
+
 			pw.flush();
 
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
