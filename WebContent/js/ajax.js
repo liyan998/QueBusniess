@@ -19,12 +19,18 @@ function ajaxUrl(urlstr, handler) {
 		}
 		var statusCode = (xmlhttp.status / 100);
 		
-		console.log("Code:"+statusCode);
+		//console.log("Code:"+statusCode);
 		switch(statusCode)
 		{
 		case 5:
-			console.log("Server Error!");
+			console.log("Server Error! 50X");
+			handler(-1);
 			break;
+		case 4:
+			console.log("Server Error! 40X");
+			handler(-1);
+			break;
+		
 		}
 	};
 	

@@ -62,7 +62,10 @@ margin: 0px;
 	background-color: #ccff00;
 }
 
-#dialog-recvMessage,#dialog-message {
+#dialog-recvMessage,
+#dialog-message,
+#dialog-checkout,
+#dialog-checkoutcomplete {
 	display: none;
 }
 </style>
@@ -134,6 +137,28 @@ function chanageOnlineState()
 	flushShopState(shopStat);
 }
 
+function nextUser(index)
+{
+	
+	function confim()
+	{
+		ajaxUrl(URL_REMOVEUSER, removeUser);
+		$( this ).dialog( "close" );
+	};
+	
+	$('#dialog-checkout').dialog({
+	      modal: 	true,
+	      autoOpen: false,
+	      buttons: {
+	    	"取消": function() {
+	    		document.getElementById("parm1").innerHTML = "";
+	        	$( this ).dialog( "close" );
+			},
+			Ok:confim
+	      }
+	    }).dialog( "open" );	
+}
+
 
 </script>
 
@@ -159,7 +184,27 @@ function chanageOnlineState()
 				style="float: left; margin: 0 7px 50px 0;"></span>用户XXX
 		</p>
 		<p>
-			指定给 <b>某业务<span id="parm2"></span></b>.
+			指定给 <b>某业务<span></span></b>.
+		</p>
+	</div>
+
+	<div id="dialog-checkout" title="结帐">
+		<p>
+			<span class="ui-icon ui-icon-circle-check"
+				style="float: left; margin: 0 7px 50px 0;"></span>用户XXX
+		</p>
+		<p>
+			指定给 <b>某业务<span></span></b>.
+		</p>
+	</div>
+
+	<div id="dialog-checkoutcomplete" title="结帐完成">
+		<p>
+			<span class="ui-icon ui-icon-circle-check"
+				style="float: left; margin: 0 7px 50px 0;"></span>用户XXX
+		</p>
+		<p>
+			指定给 <b>某业务<span ></span></b>.
 		</p>
 	</div>
 	<!--  -->

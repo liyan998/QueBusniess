@@ -11,5 +11,12 @@ public class User implements IUser
 	public static final int CHANNEL_MOBLIE 	= 2;
 	
 	public static final int CHANNEL_WEIXIN 	= 3;
+
+	@Override
+	public long getId()
+	{
+		// TODO Auto-generated method stub
+		return id;
+	}
 	
 }

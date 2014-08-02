@@ -4,6 +4,7 @@
 
 var URL_ALLBUSNIESS = 'http://localhost:8084/QueBusniess/AllBusniess';
 var URL_ADDUSER = 'http://localhost:8084/QueBusniess/AddUser';
+var URL_REMOVEUSER = 'http://localhost:8084/QueBusniess/RemoveUser';
 
 var shopStat = {
 	STATE_CLOSE : 0,
@@ -19,20 +20,20 @@ var shopStat = {
  * @param obj
  */
 function flushShopState(obj) {
-	var shoponoffbutton = document.getElementById("shoponOffbutten");
-	var activeAcer = document.getElementById("openshop");
+	var shoponoffbutton 			= document.getElementById("shoponOffbutten");
+	var activeAcer 					= document.getElementById("openshop");
 
 	switch (obj.state) {
 	case shopStat.STATE_CLOSE:// closed;
 
-		shoponoffbutton.value = "打开";
-		activeAcer.style.display = "none";
+		shoponoffbutton.value 		= "打开";
+		activeAcer.style.display 	= "none";
 
 		break;
 	case shopStat.STATE_OPEN:// open
 
-		shoponoffbutton.value = "关闭";
-		activeAcer.style.display = "inline";
+		shoponoffbutton.value 		= "关闭";
+		activeAcer.style.display 	= "inline";
 		setOnline(obj);
 
 		break;
@@ -74,35 +75,41 @@ function flushBusniessList() {
 			+ '	<div style="float: left; padding: 3px 0px;">'
 			+ '%name%    '
 			+ '正在等待：%quelength%'
-			+ '		<input style="float: left; width: 98px; height: 31px;" type="button" value="下一位" />'
+			+ '		<input style="float: left; width: 98px; height: 31px;" type="button" onclick="nextUser(%index%)" %disable% value="下一位" />'
 			+ '	</div>'
 			+ '	<div style="width: 100%; height: 50px; float: left;">'
-			//+ '		<div class="queElement1"></div>' 
-			+ '%que%' + '	</div>'
-			+ '</li>';
+			// + ' <div class="queElement1"></div>'
+			+ '%que%' + '	</div>' + '</li>';
 	var tempqueElement = '<div class="queElement1">%userid%</div>';
-	
-	
+
 	var result = "";
 	var selectobj = document.getElementById('swbusniess');
-	
+
 	selectobj.options.length = 0;
 
 	for (var i = 0; i < obj.length; i++) {
+		
 		result += temp.replace("%name%", obj[i].name);
 
 		var optionobj = new Option(obj[i].name, obj[i].id);
 		selectobj.add(optionobj);
-
 		//
+		
 		var queelement = "";
 		for (var j = 0; j < obj[i].allUser.length; j++) {
-			queelement += tempqueElement.replace('%userid%', obj[i].allUser[j].id)+"\n";
+			queelement += tempqueElement.replace('%userid%',
+					obj[i].allUser[j].id)+ "\n";
 		}
-		result = result.replace('%que%', queelement);
 		
+		result = result.replace('%que%', queelement);
 		result = result.replace('%quelength%', obj[i].allUser.length);
+		result = result.replace('%index%', obj[i].id);
+		// alert(obj[i].allUser.length > 0);
+		result = result.replace('%disable%',
+				obj[i].allUser.length < 1 ? 'disabled="true"' : "");
 	}
+
+	// console.log(result);
 	document.getElementById("busniesslist").innerHTML = result;
 }
 // ----------------------------------------
@@ -137,8 +144,32 @@ function addUser(content) {
 			"关闭" : function() {
 				// document.getElementById("parm2").innerHTML = "";
 				$(this).dialog("close");
-				ajaxUrl(URL_ALLBUSNIESS , allBussniess);
+				ajaxUrl(URL_ALLBUSNIESS, allBussniess);
 			}
 		}
 	}).dialog("open");
+}
+
+function removeUser(content) 
+{
+	console.log(content);
+	if (content == -1)
+	{
+		return;
+	}
+
+	var obj = eval("(" + content + ")");
+
+	if (obj.code == 1) {
+		$("#dialog-checkoutcomplete").dialog({
+			modal : true,
+			autoOpen : false,
+			buttons : {
+				"关闭" : function() {
+					// document.getElementById("parm2").innerHTML = "";
+					$(this).dialog("close");				
+				}
+			}
+		}).dialog("open");
+	}
 }

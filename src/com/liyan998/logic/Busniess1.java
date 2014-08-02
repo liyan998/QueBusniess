@@ -18,6 +18,9 @@ public class Busniess1 extends ABusniess
 		return null;
 	}
 
-	
+	public IUser checkOut()
+	{
+		return allUser.remove(0);
+	}
 
 }

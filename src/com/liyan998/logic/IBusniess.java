@@ -10,4 +10,6 @@ public interface IBusniess
 	public void removeUser(long id);
 	
 	public String getJData();
+	
+	public IUser checkOut();
 }

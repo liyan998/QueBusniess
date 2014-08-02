@@ -64,6 +64,13 @@ public class QueService
 		
 		return user;
 	}
+	
+	public void checkOut(int id)
+	{
+		IUser user = allBus.get(id).checkOut();
+		
+		System.out.println(user.getId());
+	}
 
 	/**
 	 * 将用户移除
